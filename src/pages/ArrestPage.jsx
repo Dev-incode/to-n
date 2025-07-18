@@ -53,7 +53,7 @@ function ExchangeModal({ bag, onClose, onExchange }) {
 
   const maxN = Math.floor(cardCount.N / 8) * 8;
   const maxR = Math.floor(cardCount.R / 4) * 4;
-  const maxSR = cardCount.SR;
+  const maxSR = Math.floor(cardCount.SR / 2) * 2;
   const maxUR = cardCount.UR;
 
   const [nCount, setNCount] = useState(0);
@@ -63,8 +63,8 @@ function ExchangeModal({ bag, onClose, onExchange }) {
 
   const nWatermelon = Math.floor(nCount / 8);
   const rWatermelon = Math.floor(rCount / 4);
-  const srWatermelon = srCount * 3;
-  const urWatermelon = urCount * 5;
+  const srWatermelon = Math.floor(srCount / 2);
+  const urWatermelon = urCount;
   const watermelon = nWatermelon + rWatermelon + srWatermelon + urWatermelon;
 
   const add = (max, set, step = 1) => () => {
@@ -102,9 +102,9 @@ function ExchangeModal({ bag, onClose, onExchange }) {
           </div>
           <div className="exchange-row">
             <span className="exchange-level level-SR">SR</span>
-            <button onClick={sub(setSRCount)} disabled={srCount === 0}>-</button>
+            <button onClick={sub(setSRCount, 2)} disabled={srCount === 0}>-</button>
             <span className="exchange-count">{srCount}/{cardCount.SR}</span>
-            <button onClick={add(maxSR, setSRCount)} disabled={srCount >= maxSR}>+</button>
+            <button onClick={add(maxSR, setSRCount, 2)} disabled={srCount >= maxSR}>+</button>
             <span className="exchange-equal">=</span>
             <span className="exchange-wm"><img src="/images/watermelon.png" alt="西瓜" />+{srWatermelon}</span>
           </div>
@@ -160,7 +160,7 @@ function ArrestPage() {
       }
       return newBag;
     });
-    setWatermelon(w => w + Math.floor(N / 8) + Math.floor(R / 4) + SR * 3 + UR * 5);
+    setWatermelon(w => w + Math.floor(N / 8) + Math.floor(R / 4) + Math.floor(SR / 2) + UR);
   };
 
   useEffect(() => {
