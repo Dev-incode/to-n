@@ -18,10 +18,10 @@ const CARD_POOL = [
 const LEVEL_ORDER = { N: 1, R: 2, SR: 3, UR: 4 };
 
 const LEVEL_RATE = [
-  { level: "N", rate: 0.6 },
-  { level: "R", rate: 0.3 },
-  { level: "SR", rate: 0.08 },
-  { level: "UR", rate: 0.02 },
+  { level: "N", rate: 0.68 },  // N 卡68%
+  { level: "R", rate: 0.28 },  // R 卡28%
+  { level: "SR", rate: 0.03 }, // SR 卡3%
+  { level: "UR", rate: 0.01 }, // UR 卡1%
 ];
 
 function randomCard() {
@@ -51,78 +51,95 @@ function ExchangeModal({ bag, onClose, onExchange }) {
   // 統計各等級卡片數量
   const cardCount = { N: 0, R: 0, SR: 0, UR: 0 };
   bag.forEach(card => { cardCount[card.level] = (cardCount[card.level] || 0) + 1; });
+  
   // 計算可兌換上限
-  const maxN = Math.floor(cardCount.N / 2) * 2;
-  const maxR = cardCount.R;
-  const maxSR = cardCount.SR;
-  const maxUR = cardCount.UR;
+  // N卡5張換1個西瓜，所以最多可換的N卡數要是5的倍數
+  const maxN = Math.floor(cardCount.N / 5) * 5;
+  // R卡2張換1個西瓜，需是2的倍數
+  const maxR = Math.floor(cardCount.R / 2) * 2;
+  const maxSR = cardCount.SR; // SR 一張一張算
+  const maxUR = cardCount.UR; // UR 一張一張算
+  
   // 狀態
   const [nCount, setNCount] = useState(0);
   const [rCount, setRCount] = useState(0);
   const [srCount, setSRCount] = useState(0);
   const [urCount, setURCount] = useState(0);
-  // 計算可換西瓜數
-  const nWatermelon = Math.floor(nCount / 2);
-  const rWatermelon = rCount * 1;
+
+  // 計算可換西瓜數（依你規則改）
+  const nWatermelon = Math.floor(nCount / 5);
+  const rWatermelon = Math.floor(rCount / 2);
   const srWatermelon = srCount * 3;
   const urWatermelon = urCount * 5;
   const watermelon = nWatermelon + rWatermelon + srWatermelon + urWatermelon;
-  // 控制加減
-  const add = (max, set) => () => set(x => Math.min(x + 1, max >= 0 ? max : 0));
-  const sub = set => () => set(x => Math.max(x - 1, 0));
+
+  // 控制加減（限制最大值）
+  const add = (max, set, step = 1) => () => {
+    set(x => {
+      let next = x + step;
+      if (max >= 0) {
+        next = Math.min(next, max);
+      }
+      return next;
+    });
+  };
+
+  const sub = (set, step = 1) => () => set(x => Math.max(x - step, 0));
+
   // 兌換
   const handleExchange = () => {
     onExchange({ N: nCount, R: rCount, SR: srCount, UR: urCount });
     onClose();
   };
-return (
-  <div className="arrest-modal-bg">
-    <div className="arrest-modal exchange-modal">
-      <div className="exchange-title">交換區</div>
-      <div className="exchange-list">
-        <div className="exchange-row">
-          <span className="exchange-level level-N">N</span>
-          <button onClick={sub(setNCount)} disabled={nCount === 0}>-</button>
-          <span className="exchange-count">{nCount}/{cardCount.N}</span>
-          <button onClick={add(maxN, setNCount)} disabled={nCount >= maxN}>+</button>
-          <span className="exchange-equal">=</span>
-          <span className="exchange-wm"><img src="/images/watermelon.png" alt="西瓜" />+{nWatermelon}</span>
+
+  return (
+    <div className="arrest-modal-bg">
+      <div className="arrest-modal exchange-modal">
+        <div className="exchange-title">交換區</div>
+        <div className="exchange-list">
+          <div className="exchange-row">
+            <span className="exchange-level level-N">N</span>
+            <button onClick={sub(setNCount, 5)} disabled={nCount === 0}>-</button>
+            <span className="exchange-count">{nCount}/{cardCount.N}</span>
+            <button onClick={add(maxN, setNCount, 5)} disabled={nCount >= maxN}>+</button>
+            <span className="exchange-equal">=</span>
+            <span className="exchange-wm"><img src="/images/watermelon.png" alt="西瓜" />+{nWatermelon}</span>
+          </div>
+          <div className="exchange-row">
+            <span className="exchange-level level-R">R</span>
+            <button onClick={sub(setRCount, 2)} disabled={rCount === 0}>-</button>
+            <span className="exchange-count">{rCount}/{cardCount.R}</span>
+            <button onClick={add(maxR, setRCount, 2)} disabled={rCount >= maxR}>+</button>
+            <span className="exchange-equal">=</span>
+            <span className="exchange-wm"><img src="/images/watermelon.png" alt="西瓜" />+{rWatermelon}</span>
+          </div>
+          <div className="exchange-row">
+            <span className="exchange-level level-SR">SR</span>
+            <button onClick={sub(setSRCount)} disabled={srCount === 0}>-</button>
+            <span className="exchange-count">{srCount}/{cardCount.SR}</span>
+            <button onClick={add(maxSR, setSRCount)} disabled={srCount >= maxSR}>+</button>
+            <span className="exchange-equal">=</span>
+            <span className="exchange-wm"><img src="/images/watermelon.png" alt="西瓜" />+{srWatermelon}</span>
+          </div>
+          <div className="exchange-row">
+            <span className="exchange-level level-UR">UR</span>
+            <button onClick={sub(setURCount)} disabled={urCount === 0}>-</button>
+            <span className="exchange-count">{urCount}/{cardCount.UR}</span>
+            <button onClick={add(maxUR, setURCount)} disabled={urCount >= maxUR}>+</button>
+            <span className="exchange-equal">=</span>
+            <span className="exchange-wm"><img src="/images/watermelon.png" alt="西瓜" />+{urWatermelon}</span>
+          </div>
         </div>
-        <div className="exchange-row">
-          <span className="exchange-level level-R">R</span>
-          <button onClick={sub(setRCount)} disabled={rCount === 0}>-</button>
-          <span className="exchange-count">{rCount}/{cardCount.R}</span>
-          <button onClick={add(maxR, setRCount)} disabled={rCount >= maxR}>+</button>
-          <span className="exchange-equal">=</span>
-          <span className="exchange-wm"><img src="/images/watermelon.png" alt="西瓜" />+{rWatermelon}</span>
+        <div className="exchange-total">
+          總計 <img src="/images/watermelon.png" alt="西瓜" /> +{watermelon}
         </div>
-        <div className="exchange-row">
-          <span className="exchange-level level-SR">SR</span>
-          <button onClick={sub(setSRCount)} disabled={srCount === 0}>-</button>
-          <span className="exchange-count">{srCount}/{cardCount.SR}</span>
-          <button onClick={add(maxSR, setSRCount)} disabled={srCount >= maxSR}>+</button>
-          <span className="exchange-equal">=</span>
-          <span className="exchange-wm"><img src="/images/watermelon.png" alt="西瓜" />+{srWatermelon}</span>
+        <div className="exchange-btn-row">
+          <button className="exchange-cancel-btn" onClick={onClose}>取消</button>
+          <button className="exchange-confirm-btn" onClick={handleExchange} disabled={watermelon === 0}>確定</button>
         </div>
-        <div className="exchange-row">
-          <span className="exchange-level level-UR">UR</span>
-          <button onClick={sub(setURCount)} disabled={urCount === 0}>-</button>
-          <span className="exchange-count">{urCount}/{cardCount.UR}</span>
-          <button onClick={add(maxUR, setURCount)} disabled={urCount >= maxUR}>+</button>
-          <span className="exchange-equal">=</span>
-          <span className="exchange-wm"><img src="/images/watermelon.png" alt="西瓜" />+{urWatermelon}</span>
-        </div>
-      </div>
-      <div className="exchange-total">
-        總計 <img src="/images/watermelon.png" alt="西瓜" /> +{watermelon}
-      </div>
-      <div className="exchange-btn-row">
-        <button className="exchange-cancel-btn" onClick={onClose}>取消</button>
-        <button className="exchange-confirm-btn" onClick={handleExchange} disabled={watermelon === 0}>確定</button>
       </div>
     </div>
-  </div>
-);
+  );
 }
 
 function ArrestPage() {
@@ -145,7 +162,6 @@ function ArrestPage() {
 
   // 兌換邏輯
   const handleExchange = ({ N, R, SR, UR }) => {
-    // 靘?蝘駁?∠?
     let leftN = N, leftR = R, leftSR = SR, leftUR = UR;
     setBag(prev => {
       const newBag = [];
@@ -158,8 +174,8 @@ function ArrestPage() {
       }
       return newBag;
     });
-    // ?正??
-    setWatermelon(w => w + Math.floor(N / 2) + R + SR * 3 + UR * 5);
+    // 更新西瓜數量
+    setWatermelon(w => w + Math.floor(N / 5) + Math.floor(R / 2) + SR * 3 + UR * 5);
   };
 
   // 依序自動淡入卡片
@@ -181,7 +197,7 @@ function ArrestPage() {
   }, [showModal, drawn]);
 
   // 依等級排序已抽到的卡片（可重複）
-  const bagCards = bag.sort((a, b) => LEVEL_ORDER[a.level] - LEVEL_ORDER[b.level] || a.id - b.id);
+  const bagCards = [...bag].sort((a, b) => LEVEL_ORDER[a.level] - LEVEL_ORDER[b.level] || a.id - b.id);
 
   return (
     <div className="arrest-page">
