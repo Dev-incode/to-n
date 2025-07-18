@@ -18,10 +18,10 @@ const CARD_POOL = [
 const LEVEL_ORDER = { N: 1, R: 2, SR: 3, UR: 4 };
 
 const LEVEL_RATE = [
-  { level: "N", rate: 0.72 },  // N 卡 72%
-  { level: "R", rate: 0.24 },  // R 卡 24%
-  { level: "SR", rate: 0.03 }, // SR 卡 3%
-  { level: "UR", rate: 0.01 }, // UR 卡 1%
+  { level: "N", rate: 0.72 },
+  { level: "R", rate: 0.24 },
+  { level: "SR", rate: 0.03 },
+  { level: "UR", rate: 0.01 },
 ];
 
 function randomCard() {
@@ -48,45 +48,32 @@ function drawCards() {
 }
 
 function ExchangeModal({ bag, onClose, onExchange }) {
-  // 統計各等級卡片數量
   const cardCount = { N: 0, R: 0, SR: 0, UR: 0 };
   bag.forEach(card => { cardCount[card.level] = (cardCount[card.level] || 0) + 1; });
 
-  // 計算可兌換上限
-  // N卡8張換1個西瓜，所以最多可換的N卡數要是8的倍數
   const maxN = Math.floor(cardCount.N / 8) * 8;
-  // R卡2張換1個西瓜，需是2的倍數
-  const maxR = Math.floor(cardCount.R / 2) * 2;
-  const maxSR = cardCount.SR; // SR 一張一張算
-  const maxUR = cardCount.UR; // UR 一張一張算
+  const maxR = Math.floor(cardCount.R / 4) * 4;
+  const maxSR = cardCount.SR;
+  const maxUR = cardCount.UR;
 
-  // 狀態
   const [nCount, setNCount] = useState(0);
   const [rCount, setRCount] = useState(0);
   const [srCount, setSRCount] = useState(0);
   const [urCount, setURCount] = useState(0);
 
-  // 計算可換西瓜數
   const nWatermelon = Math.floor(nCount / 8);
-  const rWatermelon = Math.floor(rCount / 2);
+  const rWatermelon = Math.floor(rCount / 4);
   const srWatermelon = srCount * 3;
   const urWatermelon = urCount * 5;
   const watermelon = nWatermelon + rWatermelon + srWatermelon + urWatermelon;
 
-  // 控制加減（限制最大值）
   const add = (max, set, step = 1) => () => {
-    set(x => {
-      let next = x + step;
-      if (max >= 0) {
-        next = Math.min(next, max);
-      }
-      return next;
-    });
+    set(x => Math.min(x + step, max));
+  };
+  const sub = (set, step = 1) => () => {
+    set(x => Math.max(x - step, 0));
   };
 
-  const sub = (set, step = 1) => () => set(x => Math.max(x - step, 0));
-
-  // 兌換
   const handleExchange = () => {
     onExchange({ N: nCount, R: rCount, SR: srCount, UR: urCount });
     onClose();
@@ -107,9 +94,9 @@ function ExchangeModal({ bag, onClose, onExchange }) {
           </div>
           <div className="exchange-row">
             <span className="exchange-level level-R">R</span>
-            <button onClick={sub(setRCount, 2)} disabled={rCount === 0}>-</button>
+            <button onClick={sub(setRCount, 4)} disabled={rCount === 0}>-</button>
             <span className="exchange-count">{rCount}/{cardCount.R}</span>
-            <button onClick={add(maxR, setRCount, 2)} disabled={rCount >= maxR}>+</button>
+            <button onClick={add(maxR, setRCount, 4)} disabled={rCount >= maxR}>+</button>
             <span className="exchange-equal">=</span>
             <span className="exchange-wm"><img src="/images/watermelon.png" alt="西瓜" />+{rWatermelon}</span>
           </div>
@@ -160,7 +147,6 @@ function ArrestPage() {
     setShowModal(true);
   };
 
-  // 兌換邏輯
   const handleExchange = ({ N, R, SR, UR }) => {
     let leftN = N, leftR = R, leftSR = SR, leftUR = UR;
     setBag(prev => {
@@ -174,11 +160,9 @@ function ArrestPage() {
       }
       return newBag;
     });
-    // 更新西瓜數量
-    setWatermelon(w => w + Math.floor(N / 8) + Math.floor(R / 2) + SR * 3 + UR * 5);
+    setWatermelon(w => w + Math.floor(N / 8) + Math.floor(R / 4) + SR * 3 + UR * 5);
   };
 
-  // 依序自動淡入卡片
   useEffect(() => {
     if (showModal && drawn.length > 0) {
       setVisibleCards(Array(drawn.length).fill(false));
@@ -196,7 +180,6 @@ function ArrestPage() {
     }
   }, [showModal, drawn]);
 
-  // 依等級排序已抽到的卡片（可重複）
   const bagCards = [...bag].sort((a, b) => LEVEL_ORDER[a.level] - LEVEL_ORDER[b.level] || a.id - b.id);
 
   return (
