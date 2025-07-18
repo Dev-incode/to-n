@@ -1,4 +1,4 @@
-﻿import React, { createContext, useState } from 'react';
+﻿import React, { createContext, useState, useEffect } from 'react';
 
 export const AppContext = createContext();
 
@@ -11,11 +11,53 @@ const initialTasks = {
 const initialCards = [];
 
 export function AppProvider({ children }) {
-  const [watermelon, setWatermelon] = useState(0);
-  const [tasks, setTasks] = useState(initialTasks);
-  const [caughtCount, setCaughtCount] = useState(0); // 誘捕次數
-  const [cards, setCards] = useState(initialCards); // 已收集卡片id陣列
-  const [bag, setBag] = useState([]); // 所有已抽到的卡片（可重複）
+  // localStorage key 名稱
+  const STORAGE_KEYS = {
+    watermelon: 'watermelon',
+    tasks: 'tasks',
+    caughtCount: 'caughtCount',
+    cards: 'cards',
+    bag: 'bag',
+  };
+
+  // 1. 初始化時讀取 localStorage
+  const [watermelon, setWatermelon] = useState(() => {
+    const saved = localStorage.getItem(STORAGE_KEYS.watermelon);
+    return saved !== null ? JSON.parse(saved) : 0;
+  });
+  const [tasks, setTasks] = useState(() => {
+    const saved = localStorage.getItem(STORAGE_KEYS.tasks);
+    return saved !== null ? JSON.parse(saved) : initialTasks;
+  });
+  const [caughtCount, setCaughtCount] = useState(() => {
+    const saved = localStorage.getItem(STORAGE_KEYS.caughtCount);
+    return saved !== null ? JSON.parse(saved) : 0;
+  });
+  const [cards, setCards] = useState(() => {
+    const saved = localStorage.getItem(STORAGE_KEYS.cards);
+    return saved !== null ? JSON.parse(saved) : initialCards;
+  });
+  const [bag, setBag] = useState(() => {
+    const saved = localStorage.getItem(STORAGE_KEYS.bag);
+    return saved !== null ? JSON.parse(saved) : [];
+  });
+
+  // 2. 狀態變動時寫入 localStorage
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.watermelon, JSON.stringify(watermelon));
+  }, [watermelon]);
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks));
+  }, [tasks]);
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.caughtCount, JSON.stringify(caughtCount));
+  }, [caughtCount]);
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.cards, JSON.stringify(cards));
+  }, [cards]);
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.bag, JSON.stringify(bag));
+  }, [bag]);
 
   // 完成任務
   const completeTask = (group, idx, reward = 1) => {

@@ -1,4 +1,4 @@
-﻿import React, { useContext } from 'react';
+﻿import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 import './BookPage.css';
 
@@ -24,6 +24,7 @@ const LEVEL_COUNTS = {
 
 function BookPage() {
   const { cards } = useContext(AppContext);
+  const [showResetModal, setShowResetModal] = useState(false);
   
   // 計算各等級已收集數量
   const collectedByLevel = {
@@ -80,6 +81,18 @@ function BookPage() {
         </div>
       </div>
       <div className="book-footer-tip">集滿後，山之豚靈會賜予神秘禮物！</div>
+      <button className="book-reset-btn" onClick={() => setShowResetModal(true)}>重製</button>
+      {showResetModal && (
+        <div className="book-reset-modal-bg">
+          <div className="book-reset-modal">
+            <div className="book-reset-modal-title">確定要重製所有進度嗎？</div>
+            <div className="book-reset-modal-btns">
+              <button className="book-reset-cancel" onClick={() => setShowResetModal(false)}>取消</button>
+              <button className="book-reset-confirm" onClick={() => { localStorage.clear(); window.location.reload(); }}>確定重製</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
