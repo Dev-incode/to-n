@@ -8,7 +8,7 @@ const CARD_POOL = [
   { id: 3, name: '頹廢豚', level: 'N', img: '/images/card-03.png' },
   { id: 4, name: '口水豚', level: 'R', img: '/images/card-04.png' },
   { id: 5, name: '厭世豚', level: 'R', img: '/images/card-05.png' },
-  { id: 6, name: '鄙視豚', level: 'SR', img: '/images/card-06.png' },
+  { id: 6, name: '鄙視豚', level: 'R', img: '/images/card-06.png' },
   { id: 7, name: '八卦豚', level: 'SR', img: '/images/card-07.png' },
   { id: 8, name: '緊急豚', level: 'SR', img: '/images/card-08.png' },
   { id: 9, name: '貓貓豚', level: 'UR', img: '/images/card-09.png' },
@@ -17,8 +17,8 @@ const CARD_POOL = [
 
 const LEVEL_COUNTS = {
   N: 3,
-  R: 2,
-  SR: 3,
+  R: 3,
+  SR: 2,
   UR: 2,
 };
 
