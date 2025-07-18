@@ -18,10 +18,10 @@ const CARD_POOL = [
 const LEVEL_ORDER = { N: 1, R: 2, SR: 3, UR: 4 };
 
 const LEVEL_RATE = [
-  { level: "N", rate: 0.77 },  // N 卡 77%
-  { level: "R", rate: 0.20 },  // R 卡 20%
-  { level: "SR", rate: 0.025 }, // SR 卡 2.5%
-  { level: "UR", rate: 0.005 }, // UR 卡 0.5%
+  { level: "N", rate: 0.72 },  // N 卡 72%
+  { level: "R", rate: 0.24 },  // R 卡 24%
+  { level: "SR", rate: 0.03 }, // SR 卡 3%
+  { level: "UR", rate: 0.01 }, // UR 卡 1%
 ];
 
 function randomCard() {
