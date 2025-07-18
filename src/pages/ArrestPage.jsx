@@ -88,7 +88,30 @@ return (
           <span className="exchange-equal">=</span>
           <span className="exchange-wm"><img src="/images/watermelon.png" alt="西瓜" />+{nWatermelon}</span>
         </div>
-        {/* 其他 R、SR、UR 類似，這裡省略 */}
+        <div className="exchange-row">
+          <span className="exchange-level level-R">R</span>
+          <button onClick={sub(setRCount)} disabled={rCount === 0}>-</button>
+          <span className="exchange-count">{rCount}/{cardCount.R}</span>
+          <button onClick={add(maxR, setRCount)} disabled={rCount >= maxR}>+</button>
+          <span className="exchange-equal">=</span>
+          <span className="exchange-wm"><img src="/images/watermelon.png" alt="西瓜" />+{rWatermelon}</span>
+        </div>
+        <div className="exchange-row">
+          <span className="exchange-level level-SR">SR</span>
+          <button onClick={sub(setSRCount)} disabled={srCount === 0}>-</button>
+          <span className="exchange-count">{srCount}/{cardCount.SR}</span>
+          <button onClick={add(maxSR, setSRCount)} disabled={srCount >= maxSR}>+</button>
+          <span className="exchange-equal">=</span>
+          <span className="exchange-wm"><img src="/images/watermelon.png" alt="西瓜" />+{srWatermelon}</span>
+        </div>
+        <div className="exchange-row">
+          <span className="exchange-level level-UR">UR</span>
+          <button onClick={sub(setURCount)} disabled={urCount === 0}>-</button>
+          <span className="exchange-count">{urCount}/{cardCount.UR}</span>
+          <button onClick={add(maxUR, setURCount)} disabled={urCount >= maxUR}>+</button>
+          <span className="exchange-equal">=</span>
+          <span className="exchange-wm"><img src="/images/watermelon.png" alt="西瓜" />+{urWatermelon}</span>
+        </div>
       </div>
       <div className="exchange-total">
         總計 <img src="/images/watermelon.png" alt="西瓜" /> +{watermelon}

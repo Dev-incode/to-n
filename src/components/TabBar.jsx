@@ -2,9 +2,9 @@
 import './TabBar.css';
 
 const tabs = [
-  { key: 'task', label: '隞餃?', icon: '/images/tab-task.png' },
-  { key: 'arrest', label: '隤?', icon: '/images/tab-arrest.png' },
-  { key: 'book', label: '??', icon: '/images/tab-book.png' },
+  { key: 'task', label: '任務', icon: '/images/tab-task.png' },
+  { key: 'arrest', label: '誘捕', icon: '/images/tab-arrest.png' },
+  { key: 'book', label: '圖鑑', icon: '/images/tab-book.png' },
 ];
 
 function TabBar({ tab, setTab }) {
