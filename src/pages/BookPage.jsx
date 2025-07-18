@@ -3,16 +3,16 @@ import { AppContext } from '../context/AppContext';
 import './BookPage.css';
 
 const CARD_POOL = [
-  { id: 1, name: '銝?祈?', level: 'N', img: '/images/card-01.png' },
-  { id: 2, name: '??', level: 'N', img: '/images/card-02.png' },
-  { id: 3, name: '?孵誥鞊?, level: 'N', img: '/images/card-03.png' },
-  { id: 4, name: '??偌鞊?, level: 'R', img: '/images/card-04.png' },
-  { id: 5, name: '?凋?鞊?, level: 'R', img: '/images/card-05.png' },
-  { id: 6, name: '??鞊?, level: 'SR', img: '/images/card-06.png' },
-  { id: 7, name: '?怠鞊?, level: 'SR', img: '/images/card-07.png' },
-  { id: 8, name: '蝺亥?', level: 'SR', img: '/images/card-08.png' },
-  { id: 9, name: '鞎?鞊?, level: 'UR', img: '/images/card-09.png' },
-  { id: 10, name: '鞊▲', level: 'UR', img: '/images/card-10.png' },
+  { id: 1, name: '一般豚', level: 'N', img: '/images/card-01.png' },
+  { id: 2, name: '叛逆豚', level: 'N', img: '/images/card-02.png' },
+  { id: 3, name: '頹廢豚', level: 'N', img: '/images/card-03.png' },
+  { id: 4, name: '口水豚', level: 'R', img: '/images/card-04.png' },
+  { id: 5, name: '厭世豚', level: 'R', img: '/images/card-05.png' },
+  { id: 6, name: '鄙視豚', level: 'SR', img: '/images/card-06.png' },
+  { id: 7, name: '八卦豚', level: 'SR', img: '/images/card-07.png' },
+  { id: 8, name: '緊急豚', level: 'SR', img: '/images/card-08.png' },
+  { id: 9, name: '貓貓豚', level: 'UR', img: '/images/card-09.png' },
+  { id: 10, name: '豚桶', level: 'UR', img: '/images/card-10.png' },
 ];
 
 const LEVEL_COUNTS = {
@@ -25,7 +25,7 @@ const LEVEL_COUNTS = {
 function BookPage() {
   const { cards } = useContext(AppContext);
   
-  // 閮???蝝歇?園??賊?
+  // 計算各等級已收集數量
   const collectedByLevel = {
     N: cards.filter(id => CARD_POOL.find(c => c.id === id)?.level === 'N').length,
     R: cards.filter(id => CARD_POOL.find(c => c.id === id)?.level === 'R').length,
@@ -37,7 +37,7 @@ function BookPage() {
     <div className="book-page">
       <div className="book-list">
         <div className="book-header">
-          <div className="book-title">??</div>
+          <div className="book-title">圖鑑</div>
           <div className="book-progress">
             <div className="book-progress-item">
               <div className="book-progress-level level-N">N</div>
@@ -70,7 +70,7 @@ function BookPage() {
                   </>
                 ) : (
                   <>
-                    <img src="/images/unknow.png" alt="?芣?? className="book-card-img" />
+                    <img src="/images/unknow.png" alt="未收集" className="book-card-img" />
                     <div className="book-card-level">{card.level}</div>
                   </>
                 )}
@@ -79,7 +79,7 @@ function BookPage() {
           })}
         </div>
       </div>
-      <div className="book-footer-tip">?遛敺?撅曹?鞊???鈭?蝘旨?抬?</div>
+      <div className="book-footer-tip">集滿後，山之豚靈會賜予神秘禮物！</div>
     </div>
   );
 }

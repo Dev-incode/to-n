@@ -13,11 +13,11 @@ const initialCards = [];
 export function AppProvider({ children }) {
   const [watermelon, setWatermelon] = useState(0);
   const [tasks, setTasks] = useState(initialTasks);
-  const [caughtCount, setCaughtCount] = useState(0); // 隤?甈⊥
-  const [cards, setCards] = useState(initialCards); // 撌脫??d???
-  const [bag, setBag] = useState([]); // ??歇?賢????舫?銴?
+  const [caughtCount, setCaughtCount] = useState(0); // 誘捕次數
+  const [cards, setCards] = useState(initialCards); // 已收集卡片id陣列
+  const [bag, setBag] = useState([]); // 所有已抽到的卡片（可重複）
 
-  // 摰?隞餃?
+  // 完成任務
   const completeTask = (group, idx, reward = 1) => {
     if (!tasks[group][idx]) {
       const newTasks = { ...tasks };
@@ -28,7 +28,7 @@ export function AppProvider({ children }) {
     }
   };
 
-  // 隤?鞊?嚗?∴?
+  // 誘捕豚豚（抽卡）
   const catchPig = (newCards) => {
     setCards(prev => {
       const merged = [...prev];
