@@ -7,7 +7,7 @@ function Header() {
   return (
     <header className="header">
       <img src="/images/title.png" alt="title" className="header-title-img" />
-      <div className="header-title">鞊??萄?</div>
+      <div className="header-title">豚豚抵嘉</div>
       <div className="header-watermelon">
         <img src="/images/watermelon.png" alt="镼踹" className="header-watermelon-icon" />
         <span className="header-watermelon-count">{watermelon}</span>
