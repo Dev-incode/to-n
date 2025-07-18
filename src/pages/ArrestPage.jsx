@@ -18,10 +18,10 @@ const CARD_POOL = [
 const LEVEL_ORDER = { N: 1, R: 2, SR: 3, UR: 4 };
 
 const LEVEL_RATE = [
-  { level: "N", rate: 0.68 },  // N 卡68%
-  { level: "R", rate: 0.28 },  // R 卡28%
-  { level: "SR", rate: 0.03 }, // SR 卡3%
-  { level: "UR", rate: 0.01 }, // UR 卡1%
+  { level: "N", rate: 0.77 },  // N 卡 77%
+  { level: "R", rate: 0.20 },  // R 卡 20%
+  { level: "SR", rate: 0.025 }, // SR 卡 2.5%
+  { level: "UR", rate: 0.005 }, // UR 卡 0.5%
 ];
 
 function randomCard() {
@@ -51,23 +51,23 @@ function ExchangeModal({ bag, onClose, onExchange }) {
   // 統計各等級卡片數量
   const cardCount = { N: 0, R: 0, SR: 0, UR: 0 };
   bag.forEach(card => { cardCount[card.level] = (cardCount[card.level] || 0) + 1; });
-  
+
   // 計算可兌換上限
-  // N卡5張換1個西瓜，所以最多可換的N卡數要是5的倍數
-  const maxN = Math.floor(cardCount.N / 5) * 5;
+  // N卡8張換1個西瓜，所以最多可換的N卡數要是8的倍數
+  const maxN = Math.floor(cardCount.N / 8) * 8;
   // R卡2張換1個西瓜，需是2的倍數
   const maxR = Math.floor(cardCount.R / 2) * 2;
   const maxSR = cardCount.SR; // SR 一張一張算
   const maxUR = cardCount.UR; // UR 一張一張算
-  
+
   // 狀態
   const [nCount, setNCount] = useState(0);
   const [rCount, setRCount] = useState(0);
   const [srCount, setSRCount] = useState(0);
   const [urCount, setURCount] = useState(0);
 
-  // 計算可換西瓜數（依你規則改）
-  const nWatermelon = Math.floor(nCount / 5);
+  // 計算可換西瓜數
+  const nWatermelon = Math.floor(nCount / 8);
   const rWatermelon = Math.floor(rCount / 2);
   const srWatermelon = srCount * 3;
   const urWatermelon = urCount * 5;
@@ -99,9 +99,9 @@ function ExchangeModal({ bag, onClose, onExchange }) {
         <div className="exchange-list">
           <div className="exchange-row">
             <span className="exchange-level level-N">N</span>
-            <button onClick={sub(setNCount, 5)} disabled={nCount === 0}>-</button>
+            <button onClick={sub(setNCount, 8)} disabled={nCount === 0}>-</button>
             <span className="exchange-count">{nCount}/{cardCount.N}</span>
-            <button onClick={add(maxN, setNCount, 5)} disabled={nCount >= maxN}>+</button>
+            <button onClick={add(maxN, setNCount, 8)} disabled={nCount >= maxN}>+</button>
             <span className="exchange-equal">=</span>
             <span className="exchange-wm"><img src="/images/watermelon.png" alt="西瓜" />+{nWatermelon}</span>
           </div>
@@ -175,7 +175,7 @@ function ArrestPage() {
       return newBag;
     });
     // 更新西瓜數量
-    setWatermelon(w => w + Math.floor(N / 5) + Math.floor(R / 2) + SR * 3 + UR * 5);
+    setWatermelon(w => w + Math.floor(N / 8) + Math.floor(R / 2) + SR * 3 + UR * 5);
   };
 
   // 依序自動淡入卡片
