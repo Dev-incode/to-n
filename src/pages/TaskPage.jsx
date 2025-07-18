@@ -1,31 +1,31 @@
-import React, { useState, useContext } from 'react';
+﻿import React, { useState, useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import './TaskPage.css';
 
 const TASKS = {
   Day1: [
-    { title: '早睡早起', subtitle: '一日之計在於豚', reward: 1 },
-    { title: '準時出門', subtitle: '不要匆匆卯卯趕行程', reward: 1 },
-    { title: '甜甜蜜蜜', subtitle: '你不理豚，豚不理你！', reward: 1 },
-    { title: '美味時光', subtitle: '除了西呱，也需要好吃飼料', reward: 1 },
+    { title: '?拍?抵絲', subtitle: '銝?乩?閮?潸?', reward: 1 },
+    { title: '皞??粹?', subtitle: '銝????臬頞?蝔?, reward: 1 },
+    { title: '????', subtitle: '雿???嚗?銝?雿?', reward: 1 },
+    { title: '蝢??', subtitle: '?支?镼踹嚗??閬末?ˉ??, reward: 1 },
   ],
   Day2: [
-    { title: '早睡早起', subtitle: '一日之計在於豚', reward: 1 },
-    { title: '森林時光', subtitle: '欣賞自然美景', reward: 1 },
-    { title: '10秒抱抱', subtitle: '兵荒馬亂中也要抱抱!', reward: 1 },
-    { title: '好好喝阿', subtitle: '紅茶拿鐵好好喝阿!', reward: 1 },
+    { title: '?拍?抵絲', subtitle: '銝?乩?閮?潸?', reward: 1 },
+    { title: '璉格???', subtitle: '甈???芰蝢', reward: 1 },
+    { title: '10蝘??, subtitle: '?菔?擐砌?銝凋?閬??', reward: 1 },
+    { title: '憟賢末?', subtitle: '蝝?輸憟賢末?!', reward: 1 },
   ],
   Bonus: [
-    { title: '摸摸按鈕', subtitle: '摸摸！摸摸！10分鐘！', reward: 2 },
-    { title: '幫豚保養', subtitle: '滋潤啦~~', reward: 2 },
-    { title: '幫豚捏捏', subtitle: '肩頸僵硬！呃呃', reward: 2 },
-    { title: '火熱氛圍', subtitle: '色色的...調情...(羞)', reward: 2 },
-    { title: '乾淨豚窩', subtitle: '豚不需要自己打掃吧', reward: 2 },
-    { title: '收拾行李', subtitle: '豚不需要自己收拾吧', reward: 2 },
-    { title: '摸摸按鈕2', subtitle: '摸摸！摸摸！15分鐘！', reward: 2 },
-    { title: '摸摸按鈕3', subtitle: '摸摸！摸摸！20分鐘！', reward: 2 },
-    { title: '好啦讓你玩啦', subtitle: '有人開始凹了', reward: 20 },
-    { title: '還在凹喔', subtitle: '真的是最後喔', reward: 20 },
+    { title: '?豢??', subtitle: '?豢嚗?賂?10??嚗?, reward: 2 },
+    { title: '撟怨?靽?', subtitle: '皛膜?年~', reward: 2 },
+    { title: '撟怨???', subtitle: '?拚?萇′嚗???, reward: 2 },
+    { title: '?怎瘞?', subtitle: '?脰??..隤踵?...(蝢?', reward: 2 },
+    { title: '銋暹楊鞊版', subtitle: '鞊??閬撌望??', reward: 2 },
+    { title: '?嗆銵?', subtitle: '鞊??閬撌望?曉', reward: 2 },
+    { title: '?豢??2', subtitle: '?豢嚗?賂?15??嚗?, reward: 2 },
+    { title: '?豢??3', subtitle: '?豢嚗?賂?20??嚗?, reward: 2 },
+    { title: '憟賢霈??拙', subtitle: '?犖???嫣?', reward: 20 },
+    { title: '??孵?', subtitle: '???舀?敺?', reward: 20 },
   ],
 };
 
@@ -43,8 +43,8 @@ function TaskPage() {
     <div className="task-page">
       <div className="task-container">
         <div className="task-header">
-          <div className="task-title">每日任務</div>
-          <div className="task-description">完成每日任務，獲取西呱</div>
+          <div className="task-title">瘥隞餃?</div>
+          <div className="task-description">摰?瘥隞餃?嚗?正??/div>
         </div>
         <div className="task-list">
           {TASKS[tab].map((task, idx) => {
@@ -61,7 +61,7 @@ function TaskPage() {
                   <div className="task-card-subtitle">{task.subtitle}</div>
                 </div>
                 <div className="task-card-reward">
-                  <img src="/images/watermelon.png" alt="西呱" />
+                  <img src="/images/watermelon.png" alt="镼踹" />
                   <span>+{task.reward}</span>
                 </div>
               </button>
